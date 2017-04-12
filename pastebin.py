@@ -21,7 +21,6 @@ from datetime import datetime
 from sockshandler import SocksiPyHandler
 opener = urllib2.build_opener(SocksiPyHandler(
     socks.PROXY_TYPE_SOCKS5, '127.0.0.1', 9050))
-tor_exe_path = op.join('C:/', 'Program Files (x86)', 'Tor', 'tor.exe')
 
 # A few variables
 _verbose = True
@@ -42,11 +41,11 @@ def get_url(url):
         e = sys.exc_info()[0]
         if _verbose:
             print "ERROR: " + str(e)
-        os.system('taskkill /im tor.exe')
+        os.system('for process in $(ps aux |grep -i /usr/local/opt/tor/bin/tor | cut -d " " -f12); do sudo kill $process; done')
         if _verbose:
             print "INFO: Restarting TOR"
         time.sleep(1)
-        os.startfile(tor_exe_path)
+        os.system('tor')
         return ''
 
     # See if pastebin is complaining
